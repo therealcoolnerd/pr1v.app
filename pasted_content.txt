@@ -1,0 +1,199 @@
+PR1V DAO Whitepaper
+
+Overview
+
+PR1V DAO is a decentralized privacy toolkit built to empower users with full control over their digital assets while maintaining anonymity and security. Designed to address gaps in on-chain privacy, PR1V DAO provides tools such as wallet scrubbing, stealth transfers, and gift-based crypto sharing.
+
+PR1V DAO is launching as a minimal, secure, and censorship-resistant interface for interacting with privacy-enhancing smart contracts across EVM-compatible chains.
+
+Phase One Scope
+
+Initial Focus: Ethereum Mainnet + Layer 2s (Base, Polygon zkEVM, Arbitrum)
+
+Features launching in Phase One:
+
+Wallet Scrubber
+
+Private Send (zkSNARK-based)
+
+Gift Link Generator
+
+Connect Wallet Interface (Mobile + Desktop)
+
+Roadmap (Post-Phase One):
+
+Support for Solana, Bitcoin (via Lightning, Taproot, PSBT)
+
+Layer 2 optimization
+
+Token-gated access
+
+DAO governance modules
+
+Key Features & Modules
+
+1. Wallet Scrubber
+
+Purpose: Clean wallets from toxic or blacklisted tokens (e.g. OFAC-sanctioned, dust attack remnants).
+
+Functionality:
+
+Detect flagged or dust attack tokens
+
+Allow user to burn/send to 0x000…dead
+
+Option to generate new wallet and initiate asset migration plan
+
+Security:
+
+No external token list dependencies
+
+Local heuristics + on-chain verification
+
+No custody of assets
+
+2. Private Send (ZK Transfers)
+
+Purpose: Provide stealth-based private transfers for ETH and ERC20 tokens.
+
+Functionality:
+
+zkSNARK-based proof generation using Circom + SnarkJS
+
+Transfer funds to burner wallets or stealth addresses
+
+Optional time-locked / one-time-use wallet claim
+
+Security:
+
+No metadata logging
+
+IPFS for encrypted public proof storage (optional)
+
+User-side key generation and proof signing
+
+3. Create Gift Link
+
+Purpose: Create links for anonymous crypto transfers.
+
+Functionality:
+
+Generate new wallet with temporary private key
+
+Store private key in encrypted format linked to URL
+
+Self-destruct link logic available
+
+Use Cases:
+
+Anonymous donations
+
+Crypto gifting
+
+Whistleblower payouts
+
+Smart Contract Architecture
+
+Contracts Required:
+
+WalletScrubber.sol
+
+Burn logic for dust tokens
+
+Asset filtering and alert functions
+
+ZkSend.sol
+
+Accepts inputs for ZK proof
+
+Emits encrypted outputs to stealth wallets
+
+Uses SnarkJS verifier or external ZK Verifier contract
+
+GiftLinkFactory.sol
+
+Creates one-time wallet contracts
+
+Handles ephemeral keypair generation
+
+Verifier.sol (ZK SNARK Verifier)
+
+On-chain verifier for proof validation
+
+Imported from SnarkJS-generated code
+
+Development & Security Summary
+
+Development Summary
+
+Built in-house using Vite/Next.js + TailwindCSS
+
+React frontend integrated with Wagmi + RainbowKit (EVM support)
+
+Circom + SnarkJS for ZK proof compilation
+
+IPFS (Web3.Storage or Fleek) for metadata + proof uploads
+
+Minimal external dependencies to preserve censorship-resistance
+
+Security Considerations
+
+ZK proof integrity ensured with strict circuit design
+
+Contracts audited internally and through bug bounty program
+
+Frontend serves no backend or logs
+
+Option to verify contracts publicly on Etherscan
+
+Exploit Mitigation
+
+Threat
+
+Mitigation
+
+Dust Attack
+
+Token detection heuristic + burn tools
+
+Replay Attack
+
+One-time proof + nonce lock
+
+Link Hijack
+
+Self-destructing claim links
+
+Wallet Drain
+
+Manual opt-in asset migration only
+
+Contract Upgrade Attack
+
+All contracts immutable post-deployment
+
+Trust & Censorship Resistance
+
+Fully open-source on GitHub
+
+IPFS-hosted frontend option (no centralized hosting)
+
+No tracking, no analytics
+
+Anonymous usage by design
+
+Monetization Strategy
+
+Fee per proof generation (ZK compute cost)
+
+Token-gated access to premium modules
+
+Optional DAO-governed subscription model
+
+Conclusion
+
+PR1V DAO is a tactical response to the increasing surveillance and traceability in Web3. By offering wallet privacy tools, decentralized payment rails, and gift-based crypto sending, it empowers users to take control of their on-chain identity and safety.
+
+This protocol is the spiritual successor to the ideals of Tornado Cash—reimagined for today, secured for tomorrow, and built to thrive across chains.
+
+Let privacy be the protocol.
