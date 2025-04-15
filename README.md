@@ -28,7 +28,7 @@ PR1V is a decentralized, privacy-first crypto toolkit built to help users take b
 ## 🚀 Getting Started
 
 ```bash
-git clone https://github.com/your-org/pr1v.git
+git clone https://github.com/your-org/pr1v.app.git
 cd pr1v
 npm install
 npm run dev
