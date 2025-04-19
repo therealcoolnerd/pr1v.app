@@ -1,27 +1,40 @@
 {
   "name": "pr1v-app",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "hardhat test"
+    "test": "hardhat test",
+    "lint": "eslint \"src/**/*.{js,jsx}\" --max-warnings 0",
+    "format": "prettier --write ."
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^4.8.0",
-    "ethers": "^5.7.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "snarkjs": "^0.6.11"
+    "@vitejs/plugin-react": "^4.2.0",
+    "@headlessui/react": "^1.7.18",
+    "@heroicons/react": "^2.1.0",
+    "ethers": "^5.7.2",
+    "snarkjs": "^0.6.11",
+    "@openzeppelin/contracts": "^4.9.0"
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^4.0.0",
+    "vite": "^5.0.0",
+    "tailwindcss": "^3.3.5",
+    "postcss": "^8.4.34",
+    "autoprefixer": "^10.4.16",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-hooks": "^11.0.1",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-jsx-a11y": "^6.8.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "prettier": "^3.3.1",
     "@nomicfoundation/hardhat-toolbox": "^3.0.0",
-    "autoprefixer": "^10.4.14",
-    "chai": "^4.3.7",
-    "hardhat": "^2.12.6",
-    "postcss": "^8.4.21",
-    "tailwindcss": "^3.3.2"
+    "hardhat": "^2.20.0"
   }
 }
