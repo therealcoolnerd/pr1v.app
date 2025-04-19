@@ -1,0 +1,2 @@
+// add to root package.json "scripts":
+"circuits:build": "bash ./build-circuits.sh"
