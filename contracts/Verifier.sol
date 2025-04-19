@@ -1,11 +1,8 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.19;
 
 contract Verifier {
-    /**
-     * @dev Verify a single proof. Always returns true in this simplified stub.
-     */
-    function verifyProof(bytes memory /* proof */, uint256[] memory /* pubSignals */) public pure returns (bool) {
+    function verifyProof(bytes memory, uint256[] memory) public pure returns (bool) {
         return true;
     }
 }
