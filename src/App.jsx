@@ -1,18 +1,15 @@
 import React from 'react';
-// Import example components (if available)
-import Navbar from './Navbar';
-import WalletScrubber from './WalletScrubber';
 
 function App() {
   return (
-    <div className="min-h-screen flex flex-col">
-      {/* Example navigation bar */}
-      {Navbar && <Navbar />}
-      <main className="flex-1 p-4">
-        <h1 className="text-2xl font-bold mb-4">Welcome to PR1V</h1>
-        {/* Example feature component */}
-        {WalletScrubber ? <WalletScrubber /> : <p>PR1V frontend is running.</p>}
-      </main>
+    <div className="min-h-screen flex flex-col items-center justify-center">
+      <h1 className="text-3xl font-bold mb-2 text-center">PR1V dApp</h1>
+      <p className="text-gray-400 mb-6">
+        Front‑end skeleton running&nbsp;— tailor me!
+      </p>
+      <p className="text-xs text-gray-500">
+        Edit <code>src/App.jsx</code> and save to hot‑reload.
+      </p>
     </div>
   );
 }
