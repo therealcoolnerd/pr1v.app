@@ -1,16 +1,40 @@
-import React from 'react';
+import React from "react";
+import Navbar from "./components/Navbar";
+import WalletScrubberPage from "./components/WalletScrubberPage";
+import WalletStatus from "./components/WalletStatus";
 
+import { WagmiProvider, createConfig, configureChains } from "wagmi";
+import { publicProvider } from "wagmi/providers/public";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const { publicClient, webSocketPublicClient } = configureChains(
+  [
+    {
+      id: 1,
+      name: "Ethereum",
+      network: "ethereum",
+      nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
+      rpcUrls: { default: { http: ["https://mainnet.infura.io/v3/"] } },
+    },
+  ],
+  [publicProvider()]
+);
+const config = createConfig({
+  publicClient,
+  webSocketPublicClient,
+});
+const queryClient = new QueryClient();
 function App() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center">
-      <h1 className="text-3xl font-bold mb-2 text-center">PR1V dApp</h1>
-      <p className="text-gray-400 mb-6">
-        Front‑end skeleton running&nbsp;— tailor me!
-      </p>
-      <p className="text-xs text-gray-500">
-        Edit <code>src/App.jsx</code> and save to hot‑reload.
-      </p>
-    </div>
+    <WagmiProvider config={config}>
+      <QueryClientProvider client={queryClient}>
+        <div className='min-h-screen flex flex-col'>
+          <Navbar />
+          <WalletStatus />
+          <WalletScrubberPage />
+        </div>
+      </QueryClientProvider>
+    </WagmiProvider>
   );
 }
 

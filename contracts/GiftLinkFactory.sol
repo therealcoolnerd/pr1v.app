@@ -2,8 +2,9 @@
 pragma solidity ^0.8.19;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract GiftLinkFactory {
+contract GiftLinkFactory is Ownable {
     struct GiftLink {
         address token;
         uint256 amount;
@@ -18,6 +19,7 @@ contract GiftLinkFactory {
     event GiftClaimed(bytes32 indexed hash, address indexed to);
 
     constructor(uint256 _fee, address _feeRecipient) {
+        _transferOwnership(msg.sender);
         fee = _fee;
         feeRecipient = _feeRecipient;
     }
@@ -47,5 +49,13 @@ contract GiftLinkFactory {
             IERC20(g.token).transfer(to, g.amount);
         }
         emit GiftClaimed(h, to);
+    }
+
+    function setFee(uint256 newFee) external onlyOwner {
+        fee = newFee;
+    }
+
+    function setFeeRecipient(address newFeeRecipient) external onlyOwner {
+        feeRecipient = newFeeRecipient;
     }
 }

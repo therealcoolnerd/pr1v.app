@@ -3,11 +3,14 @@ pragma solidity ^0.8.19;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
+import "@openzeppelin/contracts/access/Ownable.sol";
+
 interface IVerifier {
     function verifyProof(bytes memory proof, uint256[] memory pubSignals) external view returns (bool);
 }
 
-contract ZkSend {
+contract ZkSend is Ownable {
+    
     uint256 public fee;
     address public feeRecipient;
     IVerifier public verifier;
@@ -46,5 +49,17 @@ contract ZkSend {
             IERC20(token).transfer(recipient, amount);
         }
         emit Withdrawal(nullifier, recipient, token, amount);
+    }
+    
+    function setFee(uint256 _fee) external onlyOwner {
+        fee = _fee;
+    }
+
+    function setFeeRecipient(address _recipient) external onlyOwner {
+        feeRecipient = _recipient;
+    }
+
+    function setVerifier(address _verifier) external onlyOwner {
+        verifier = IVerifier(_verifier);
     }
 }

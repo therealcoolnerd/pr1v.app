@@ -1,15 +1,16 @@
 module.exports = {
+  WalletScrubberContractAddress: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
   // Contract addresses - to be updated after deployment
   contractAddresses: {
     testnet: {
       verifier: "TBD",
-      walletScrubber: "TBD",
+      walletScrubber: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
       zkSend: "TBD",
       giftLinkFactory: "TBD"
     },
     mainnet: {
       verifier: "TBD",
-      walletScrubber: "TBD",
+      walletScrubber: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
       zkSend: "TBD",
       giftLinkFactory: "TBD"
     }

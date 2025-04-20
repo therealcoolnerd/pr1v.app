@@ -2,26 +2,31 @@
 pragma solidity ^0.8.19;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract WalletScrubber {
+contract WalletScrubber is Ownable {
     uint256 public fee;
     address public feeRecipient;
     address public burnAddress;
 
     event TokensBurned(address indexed token, uint256 amount);
-    event MigrationPlanGenerated(address indexed user, address indexed newWallet);
 
     constructor(uint256 _fee, address _feeRecipient) {
         fee = _fee;
         feeRecipient = _feeRecipient;
+        burnAddress = address(0xdead);
     }
 
-    function setBurnAddress(address _burn) external {
+    function setBurnAddress(address _burn) external onlyOwner {
         burnAddress = _burn;
     }
 
-    function setFeeRecipient(address _recipient) external {
+    function setFeeRecipient(address _recipient) external onlyOwner {
         feeRecipient = _recipient;
+    }
+
+    function setFee(uint256 _fee) external onlyOwner {
+        fee = _fee;
     }
 
     function scrub(address token) external payable {
@@ -30,12 +35,5 @@ contract WalletScrubber {
         IERC20(token).transfer(burnAddress, bal);
         if (fee > 0) payable(feeRecipient).transfer(fee);
         emit TokensBurned(token, bal);
-    }
-
-    function generateMigrationPlan(address newWallet) external payable returns (bool) {
-        require(msg.value >= fee, "fee");
-        if (fee > 0) payable(feeRecipient).transfer(fee);
-        emit MigrationPlanGenerated(msg.sender, newWallet);
-        return true;
     }
 }

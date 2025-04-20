@@ -1,5 +1,6 @@
-const { expect } = require('chai');
-const { ethers } = require('hardhat');
+import { expect } from 'chai';
+import pkg from 'hardhat';
+const { ethers } = pkg;
 
 describe('GiftLinkFactory', function () {
   let owner, alice, bob, gift;
@@ -15,12 +16,13 @@ describe('GiftLinkFactory', function () {
   it('creates and claims an ETH gift', async () => {
     const secret = ethers.utils.formatBytes32String('sup');
     const expiry = (await ethers.provider.getBlock('latest')).timestamp + 3600;
+    const secretHash = ethers.utils.keccak256(secret);
 
     // create
     await gift.connect(alice).createGift(
       ethers.constants.AddressZero,
       ethers.utils.parseEther('1'),
-      secret,
+      secretHash,
       expiry,
       { value: ethers.utils.parseEther('1').add(fee) }
     );
