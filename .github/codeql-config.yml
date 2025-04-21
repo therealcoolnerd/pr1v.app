@@ -1,17 +1,13 @@
 name: "PR1V CodeQL Configuration"
-
-# Enable the default query suites
 queries:
   - uses: security-extended
   - uses: security-and-quality
 
-# Don't fail on warnings for now while we stabilize the analysis
 query-filters:
   - exclude:
       problem.severity:
         - warning
 
-# Define which directories to scan and which to ignore
 paths:
   - src
   - components
