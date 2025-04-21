@@ -26,37 +26,6 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    # Create CodeQL config directory
-    - name: Create CodeQL config directory
-      run: mkdir -p .github/codeql
-
-    # Create CodeQL config file
-    - name: Create CodeQL config file
-      run: |
-        cat > .github/codeql/codeql-config.yml << 'EOL'
-        name: "PR1V CodeQL Configuration"
-        queries:
-          - uses: security-extended
-          - uses: security-and-quality
-        query-filters:
-          - exclude:
-              problem.severity:
-                - warning
-        paths:
-          - src
-          - components
-          - pages
-          - utils
-          - lib
-        paths-ignore:
-          - '**/node_modules'
-          - '**/dist'
-          - '**/build'
-          - '**/*.test.js'
-          - '**/*.spec.js'
-          - '**/__tests__'
-        EOL
-
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
       with:
