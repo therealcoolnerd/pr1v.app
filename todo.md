@@ -50,6 +50,9 @@
 - [ ] Final security audit
 - [ ] Deploy to production
 
+## Additional Task
+- [ ] Review the hardhat cookie vulnerability: There are some low severity vulnerabilities related to cookie library used by hardhat. Keep an eye for future updates that might fix these issues, and re-evaluate whether manual intervention is required.
+
 ## Documentation
 - [ ] Create user documentation
 - [ ] Write technical documentation
