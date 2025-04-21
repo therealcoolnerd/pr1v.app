@@ -1,0 +1,69 @@
+name: "CodeQL"
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  schedule:
+    - cron: '30 1 * * 0'
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'javascript' ]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    # Create CodeQL config directory
+    - name: Create CodeQL config directory
+      run: mkdir -p .github/codeql
+
+    # Create CodeQL config file
+    - name: Create CodeQL config file
+      run: |
+        cat > .github/codeql/codeql-config.yml << 'EOL'
+        name: "PR1V CodeQL Configuration"
+        queries:
+          - uses: security-extended
+          - uses: security-and-quality
+        query-filters:
+          - exclude:
+              problem.severity:
+                - warning
+        paths:
+          - src
+          - components
+          - pages
+          - utils
+          - lib
+        paths-ignore:
+          - '**/node_modules'
+          - '**/dist'
+          - '**/build'
+          - '**/*.test.js'
+          - '**/*.spec.js'
+          - '**/__tests__'
+        EOL
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: ${{ matrix.language }}
+        config-file: ./.github/codeql/codeql-config.yml
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
+      with:
+        category: "/language:${{matrix.language}}"
