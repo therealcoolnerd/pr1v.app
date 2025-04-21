@@ -1,24 +1,18 @@
+jsx
 import React from "react";
-import { useAccount, useChainId } from 'wagmi';
+import { useAccount, useNetwork } from "wagmi";
 
 function WalletStatus() {
   const { address, isConnected } = useAccount();
-  const chainId = useChainId();
-
-  // Manually define chain names for now.
-  // A better solution will be to fetch them dynamically from wagmi configuration.
-  const chainNames = {
-    1: "Ethereum Mainnet",
-    5: "Goerli Test Network",
-  };
+  const { chain } = useNetwork();
 
   return (
     <div className="p-4">
       {isConnected ? (
         <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative">
           <strong className="font-bold">Connected: </strong>
-           <span className="block sm:inline">
-            {chainNames[chainId] || "Unknown Network"}
+          <span className="block sm:inline">
+            {chain?.name}
           </span>
           <br/>
           <strong className="font-bold">Address: </strong>
