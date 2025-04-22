@@ -1,0 +1,6 @@
+# Default CodeQL config for JavaScript
+
+name: "CodeQL JavaScript analysis"
+
+queries:
+  - uses: security-and-quality
