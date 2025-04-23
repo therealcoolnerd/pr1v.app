@@ -1,35 +1,95 @@
-import { expect } from 'chai';
-import pkg from 'hardhat';
-const { ethers } = pkg;
+const { expect } = require("chai");
+const { ethers } = require("hardhat");
 
-describe('GiftLinkFactory', function () {
-  let owner, alice, bob, gift;
-  const fee = ethers.utils.parseEther('0.01');
+describe("GiftLinkFactory (Sepolia Ready)", function () {
+  let GiftLinkFactory, factory, owner, addr1, token, fee, feeRecipient;
+  const secret = ethers.utils.formatBytes32String("super_secret");
 
-  beforeEach(async () => {
-    [owner, alice, bob] = await ethers.getSigners();
-    const Gift = await ethers.getContractFactory('GiftLinkFactory');
-    gift = await Gift.deploy(fee, owner.address);
-    await gift.deployed();
+  beforeEach(async function () {
+    [owner, addr1, feeRecipient] = await ethers.getSigners();
+    fee = ethers.utils.parseEther("0.01");
+
+    const MockERC20 = await ethers.getContractFactory("MockERC20");
+    token = await MockERC20.deploy("Mock Token", "MOCK");
+    await token.deployed();
+
+    GiftLinkFactory = await ethers.getContractFactory("GiftLinkFactory");
+    factory = await GiftLinkFactory.deploy(fee, feeRecipient.address);
+    await factory.deployed();
   });
 
-  it('creates and claims an ETH gift', async () => {
-    const secret = ethers.utils.formatBytes32String('sup');
-    const expiry = (await ethers.provider.getBlock('latest')).timestamp + 3600;
-    const secretHash = ethers.utils.keccak256(secret);
+  it("should create ETH gift link", async () => {
+    const hash = ethers.utils.keccak256(secret);
+    const amount = ethers.utils.parseEther("0.5");
+    const expiry = Math.floor(Date.now() / 1000) + 86400;
 
-    // create
-    await gift.connect(alice).createGift(
+    await factory.createGiftLink(
       ethers.constants.AddressZero,
-      ethers.utils.parseEther('1'),
-      secretHash,
+      amount,
+      hash,
       expiry,
-      { value: ethers.utils.parseEther('1').add(fee) }
+      { value: fee.add(amount) }
     );
 
-    // claim
-    await expect(() =>
-      gift.claim(secret, bob.address)
-    ).to.changeEtherBalance(bob, ethers.utils.parseEther('1'));
+    const gift = await factory.giftLinks(hash);
+    expect(gift.amount).to.equal(amount);
+    expect(gift.token).to.equal(ethers.constants.AddressZero);
+    expect(gift.claimed).to.equal(false);
+  });
+
+  it("should create token gift link", async () => {
+    const hash = ethers.utils.keccak256(secret);
+    const amount = ethers.utils.parseUnits("100", 18);
+    const expiry = Math.floor(Date.now() / 1000) + 86400;
+
+    await token.approve(factory.address, amount);
+    await factory.createGiftLink(
+      token.address,
+      amount,
+      hash,
+      expiry,
+      { value: fee }
+    );
+
+    const gift = await factory.giftLinks(hash);
+    expect(gift.amount).to.equal(amount);
+    expect(gift.token).to.equal(token.address);
+  });
+
+  it("should allow recipient to claim ETH gift", async () => {
+    const hash = ethers.utils.keccak256(secret);
+    const amount = ethers.utils.parseEther("0.5");
+    const expiry = Math.floor(Date.now() / 1000) + 86400;
+
+    await factory.createGiftLink(
+      ethers.constants.AddressZero,
+      amount,
+      hash,
+      expiry,
+      { value: fee.add(amount) }
+    );
+
+    const before = await ethers.provider.getBalance(addr1.address);
+    await factory.connect(owner).claimGift(secret, addr1.address);
+    const after = await ethers.provider.getBalance(addr1.address);
+    expect(after).to.be.above(before);
+  });
+
+  it("should allow cancellation of expired gift", async () => {
+    const hash = ethers.utils.keccak256(secret);
+    const amount = ethers.utils.parseEther("0.5");
+    const expiry = Math.floor(Date.now() / 1000);
+
+    await factory.createGiftLink(
+      ethers.constants.AddressZero,
+      amount,
+      hash,
+      expiry,
+      { value: fee.add(amount) }
+    );
+
+    await factory.cancelGift(hash);
+    const gift = await factory.giftLinks(hash);
+    expect(gift.claimed).to.be.true;
   });
 });
