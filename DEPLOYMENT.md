@@ -1,32 +1,19 @@
-# Deployment Guide
+# PR1V.app Deployment Guide
 
-## 1. Environment Variables
-Copy `.env.example` ➜ `.env` and fill:
+## Local Setup
+- Clone the repo: git clone https://github.com/therealcoolnerd/pr1v.app.git
+- Install dependencies: npm install
+- Run locally: npm run dev
 
-| Variable | Description |
-|----------|-------------|
-| `VITE_RPC_URL` | Sepolia RPC endpoint (Alchemy/Infura) |
-| `PRIVATE_KEY`  | Deployer EOA private key (Sepolia) |
-| `ETHERSCAN_API_KEY` | API key for contract verification |
-| `FLEEK_API_KEY`/`FLEEK_SECRET` | Fleek site deploy keys |
+## Deploying to Firebase
+- Install Firebase CLI: npm install -g firebase-tools
+- Authenticate: firebase login
+- Initialize project: firebase init
+- Deploy: firebase deploy
 
-## 2. Circuits
-```bash
-npm run circuits:build   # compiles Wasm + zkey + Solidity verifiers
-```
+## Alternative Deployment
+- IPFS for decentralized hosting.
+- Vercel or Netlify for CI/CD.
 
-## 3. Contracts
-```bash
-npx hardhat compile
-npx hardhat run scripts/deploy.js --network sepolia
-```
-
-Copy deployed addresses to `src/config/contracts.json` (or env).
-
-## 4. Front‑End Build
-```bash
-npm run build   # outputs dist/
-```
-
-## 5. Publish
-CI uploads `dist/` to IPFS (Fleek) and sets ENS content hash if configured.
+## Testing
+Run tests: npm test
