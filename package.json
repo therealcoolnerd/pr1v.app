@@ -11,15 +11,16 @@
     "test": "hardhat test"
   },
   "dependencies": {
+    "dotenv": "^16.5.0",
+    "ethers": "^6.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "web3": "^4.5.0",
-    "ethers": "^6.0.0"
+    "react-router-dom": "^7.5.1",
+    "web3": "^4.5.0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.18",
-    "circom": "^2.0.0",
     "eslint": "^8.0.0",
     "hardhat": "^2.0.0",
     "postcss": "^8.0.0",
@@ -28,4 +29,3 @@
     "vite": "^5.2.8"
   }
 }
->>>>>>> 13b1b24737bfbaa4f8b39ba2e48051c1c1cd0590

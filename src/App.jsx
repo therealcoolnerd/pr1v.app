@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useContext, createContext } from 'react';
 
 // Utility to validate an Ethereum address
-tunction isValidAddress(address) {
-  return /^0x[a-fA-F0-9]{40}$/.test(address);
+
+function isValidAddress(address) {
+    return /^0x[a-fA-F0-9]{40}$/.test(address);
 }
 
 // Mock wallet for demo
 const mockWallet = {
-  connect: () => new Promise((res) => setTimeout(res, 500)),
-  address: '0x1234567890abcdef1234567890abcdef12345678',
+  connect: () => new Promise(res => setTimeout(res, 500)),
+  address: "0x1234567890abcdef1234567890abcdef12345678",
   networkName: 'Ethereum Mainnet',
 };
 
@@ -18,14 +19,14 @@ const WalletContext = createContext();
 // Connect/Disconnect button component
 function ConnectWallet() {
   const { isConnected, updateConnection, disconnect } = useContext(WalletContext);
-
+  
   const handleConnect = async () => {
     try {
       await mockWallet.connect();
       updateConnection(true, mockWallet.address, mockWallet.networkName);
       localStorage.setItem('walletConnected', 'true');
     } catch (e) {
-      console.error('Failed to connect wallet:', e);
+      console.error("Failed to connect wallet:", e);
     }
   };
 
@@ -33,14 +34,14 @@ function ConnectWallet() {
     <button
       onClick={isConnected ? disconnect : handleConnect}
       className="bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full border border-gray-600"
-    >
-      {isConnected ? 'Disconnect' : 'Connect Wallet'}
-    </button>
-  );
-}
+      >
+        {isConnected ? 'Disconnect' : 'Connect Wallet'}
+      </button>
+    );
+  }
+  
+// Provider to share wallet state data
 
-// Provider to share wallet state
-data
 function WalletProvider({ children }) {
   const [isConnected, setIsConnected] = useState(false);
   const [address, setAddress] = useState('');
@@ -57,11 +58,11 @@ function WalletProvider({ children }) {
   const updateConnection = (connected, addr = '', net = '') => {
     setIsConnected(connected);
     setAddress(addr);
-    setNetworkName(net);
-  };
+      setNetworkName(net);
+    };
 
-  const disconnect = () => {
-    setIsConnected(false);
+    const disconnect = () => {
+      setIsConnected(false);
     localStorage.removeItem('walletConnected');
   };
 
@@ -73,7 +74,7 @@ function WalletProvider({ children }) {
 }
 
 // Display connection status component
-function WalletStatus() {
+  function WalletStatus() {
   const { isConnected, address, networkName } = useContext(WalletContext);
 
   return (
@@ -92,7 +93,7 @@ function WalletStatus() {
     </div>
   );
 }
-
+  
 // Wallet Scrubber Page Component
 function WalletScrubberPage() {
   const { isConnected } = useContext(WalletContext);
@@ -124,12 +125,12 @@ function WalletScrubberPage() {
         setStatus('Success');
       } else {
         throw new Error('Invalid token address');
-      }
+        }
     } catch (e) {
       console.error(e);
       setMessage(`Error: ${e.message}`);
-      setStatus('Failed');
-    } finally {
+          setStatus('Failed');
+        } finally {
       setLoading(false);
       setTimeout(() => {
         setMessage('');
@@ -137,8 +138,8 @@ function WalletScrubberPage() {
         setTxHash('');
       }, 3000);
     }
-  };
-
+  };  
+    
   return (
     <div className="p-4 max-w-md mx-auto">
       <h2 className="text-2xl font-bold mb-4">Wallet Scrubber</h2>
@@ -172,7 +173,7 @@ function WalletScrubberPage() {
     </div>
   );
 }
-
+  
 // ZK Send Page Component
 function ZKSendPage() {
   const { isConnected } = useContext(WalletContext);
@@ -220,7 +221,7 @@ function ZKSendPage() {
     </div>
   );
 }
-
+  
 // Gift Links Page Component
 function GiftLinksPage() {
   const { isConnected } = useContext(WalletContext);
@@ -234,7 +235,7 @@ function GiftLinksPage() {
   const toggleSelect = (id) => {
     setSelected((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
   };
-
+  
   const createLink = () => {
     if (selected.length === 0) return;
     setLink(`https://pr1v.app/gift/${selected.join(',')}`);
@@ -273,7 +274,7 @@ function GiftLinksPage() {
     </div>
   );
 }
-
+  
 // About Page Component
 function AboutPage() {
   return (
@@ -291,7 +292,7 @@ function AboutPage() {
     </div>
   );
 }
-
+  
 // Router component
 function ContentRouter({ activeTab }) {
   switch (activeTab) {
@@ -306,7 +307,7 @@ function ContentRouter({ activeTab }) {
       return <WalletScrubberPage />;
   }
 }
-
+  
 // Main App component
 export default function App() {
   const [activeTab, setActiveTab] = useState('wallet-scrubber');
@@ -317,9 +318,9 @@ export default function App() {
     { id: 'about', name: 'About' },
   ];
 
-  return (
+    return (
     <WalletProvider>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-black">
         <nav className="bg-gray-900 text-white p-4">
           <div className="max-w-5xl mx-auto flex justify-between">  
             <span className="font-bold text-lg">PR1V</span>

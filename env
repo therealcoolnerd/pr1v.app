@@ -1,2 +1,4 @@
-// Placeholder content for .env
-// This file should be reviewed and customized for production.
+PRIVATE_KEY=0xabcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789
+RPC_URL=https://sepolia.infura.io/v3/1234567890abcdef1234567890abcdef
+ETHERSCAN_API_KEY=abcdef0123456789abcdef0123456789
+
